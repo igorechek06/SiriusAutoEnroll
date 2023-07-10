@@ -51,7 +51,7 @@ async def wait_enroll(
     event_id: int,
     name: str,
 ) -> None:
-    await asyncio.sleep((register_from - datetime.now()).total_seconds())
+    await asyncio.sleep((register_from - datetime.now()).total_seconds() - 3)
     num = 1
     while await enroll(session, user_id, event_id):
         print(f"Error ({num} - {name})")
@@ -64,7 +64,8 @@ async def timer(pool: set[tuple[datetime, str]]) -> None:
     for register_from, name in sorted(pool, key=lambda e: e[0]):
         while register_from - datetime.now() > timedelta(seconds=3):
             print(name, register_from - datetime.now(), end="\r")
-            await asyncio.sleep(10)
+            await asyncio.sleep(1)
+        await asyncio.sleep(10)
 
 
 async def main() -> None:
