@@ -53,7 +53,7 @@ async def wait_enroll(
 ) -> None:
     await asyncio.sleep((register_from - datetime.now()).total_seconds() - 3)
     num = 1
-    while await enroll(session, user_id, event_id):
+    while not await enroll(session, user_id, event_id):
         print(f"Error ({num} - {name})")
         num += 1
     print(f"Ok ({num} - {name})")
@@ -184,7 +184,7 @@ async def main() -> None:
                 )
             else:
                 num = 1
-                while await enroll(session, int(user["id"]), id):
+                while not await enroll(session, int(user["id"]), id):
                     print(f"Error ({num})")
                     num += 1
                 print(f"Ok ({num})")
